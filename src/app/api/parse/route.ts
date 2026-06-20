@@ -12,6 +12,15 @@ export async function POST(req: NextRequest) {
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
+    
+    if (file.size > 2 * 1024 * 1024) {
+      return NextResponse.json({ error: "File too large (max 2MB)" }, { status: 400 });
+    }
+
+    const fileName = file.name.toLowerCase();
+    if (!fileName.endsWith(".pdf") && !fileName.endsWith(".docx")) {
+      return NextResponse.json({ error: "Invalid file type. Only PDF and DOCX files are allowed." }, { status: 400 });
+    }
 
     const buffer = Buffer.from(await file.arrayBuffer());
     let text = "";

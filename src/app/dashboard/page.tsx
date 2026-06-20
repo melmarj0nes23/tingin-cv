@@ -95,6 +95,15 @@ export default function DashboardPage() {
       setError("Please upload your resume.");
       return;
     }
+    if (file.size > 2 * 1024 * 1024) {
+      setError("Resume file is too large. Please upload a file under 2MB.");
+      return;
+    }
+    const fileName = file.name.toLowerCase();
+    if (!fileName.endsWith(".pdf") && !fileName.endsWith(".docx")) {
+      setError("Invalid file type. Only PDF and DOCX files are allowed.");
+      return;
+    }
     if (!jobDescription) {
       setError("Please paste the job description.");
       return;
