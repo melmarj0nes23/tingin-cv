@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
       text = await new Promise((resolve, reject) => {
         // Initialize pdf2json in text extraction mode (1)
-        const pdfParser = new PDFParser(null, 1);
+        const pdfParser = new PDFParser(null, 1 as any);
         
         pdfParser.on("pdfParser_dataError", (errData: any) => reject(errData.parserError));
         pdfParser.on("pdfParser_dataReady", () => {
