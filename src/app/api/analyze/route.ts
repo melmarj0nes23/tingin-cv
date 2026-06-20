@@ -101,15 +101,38 @@ export async function POST(req: NextRequest) {
       ],
     };
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: responseSchema,
-        temperature: 0.2, // Low temperature for consistent JSON
-      },
-    });
+    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+    
+    let response: any = null;
+    let retries = 0;
+    while (retries < 2) {
+      try {
+        response = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: prompt,
+          config: {
+            responseMimeType: "application/json",
+            responseSchema: responseSchema,
+            temperature: 0.2, // Low temperature for consistent JSON
+          },
+        });
+        break; // Success
+      } catch (error: any) {
+        const errorStr = error.toString();
+        if ((errorStr.includes("429") || errorStr.includes("RESOURCE_EXHAUSTED")) && retries < 1) {
+          const retryMatch = errorStr.match(/retry in ([\d.]+)s/);
+          let waitTime = 15000; // default 15s wait
+          if (retryMatch && retryMatch[1]) {
+            waitTime = parseFloat(retryMatch[1]) * 1000 + 1000; // Exact time + 1s buffer
+          }
+          console.log(`[Rate Limit Hit] Automatically waiting ${waitTime}ms before retry...`);
+          await delay(waitTime);
+          retries++;
+        } else {
+          throw error;
+        }
+      }
+    }
 
     const textResponse = response.text;
     if (!textResponse) {
