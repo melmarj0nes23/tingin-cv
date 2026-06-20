@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: "Both resumeText and jobDescription are required." },
         { status: 400 }
+      );
     }
 
     // PII Scrubber
