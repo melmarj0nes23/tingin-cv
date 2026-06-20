@@ -10,7 +10,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: "Both resumeText and jobDescription are required." },
         { status: 400 }
-      );
+    }
+
+    // PII Scrubber
+    let extractedEmail = "";
+    let extractedPhone = "";
+
+    const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+    const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
+
+    let scrubbedResumeText = resumeText;
+
+    const emailMatch = scrubbedResumeText.match(emailRegex);
+    if (emailMatch) {
+      extractedEmail = emailMatch[0];
+      scrubbedResumeText = scrubbedResumeText.replace(emailRegex, "[REDACTED_EMAIL]");
+    }
+
+    const phoneMatch = scrubbedResumeText.match(phoneRegex);
+    if (phoneMatch) {
+      extractedPhone = phoneMatch[0];
+      scrubbedResumeText = scrubbedResumeText.replace(phoneRegex, "[REDACTED_PHONE]");
     }
 
     const prompt = `
@@ -27,7 +47,7 @@ export async function POST(req: NextRequest) {
       
       Resume Text:
       """
-      ${resumeText}
+      ${scrubbedResumeText}
       """
       
       Target Job Description:
@@ -94,11 +114,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const textResponse = response.text;
+    let textResponse = response.text;
     if (!textResponse) {
         throw new Error("AI returned empty response");
     }
 
+    // PII Restorer
+    if (extractedEmail) {
+      textResponse = textResponse.replace(/\[REDACTED_EMAIL\]/g, extractedEmail);
+    }
+    if (extractedPhone) {
+      textResponse = textResponse.replace(/\[REDACTED_PHONE\]/g, extractedPhone);
+    }
+
+    // Clean up potential markdown formatting
     const rewrittenResume = JSON.parse(textResponse);
     return NextResponse.json({ rewrittenResume });
   } catch (error) {

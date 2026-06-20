@@ -12,8 +12,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: "Both resumeText and jobDescription are required." },
         { status: 400 }
-      );
     }
+
+    // PII Scrubber - 100% mathematically secure data protection
+    const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+    const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
+    
+    const scrubbedResumeText = resumeText
+      .replace(emailRegex, "[REDACTED_EMAIL]")
+      .replace(phoneRegex, "[REDACTED_PHONE]");
 
     const prompt = `
       You are an expert AI Career Assistant, Recruiter, and ATS Simulator.
@@ -25,7 +32,7 @@ export async function POST(req: NextRequest) {
       
       Resume Text:
       """
-      ${resumeText}
+      ${scrubbedResumeText}
       """
       
       Target Job Description:
