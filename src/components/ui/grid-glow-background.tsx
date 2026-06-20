@@ -43,9 +43,9 @@ export const GridGlowBackground: React.FC<GridGlowBackgroundProps> = ({
 
       constructor() {
         this.x =
-          Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
+          Math.floor(Math.random() * (canvas!.width / gridSize)) * gridSize;
         this.y =
-          Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
+          Math.floor(Math.random() * (canvas!.height / gridSize)) * gridSize;
         this.targetX = this.x;
         this.targetY = this.y;
         this.radius = Math.random() * 80 + 40;
@@ -59,9 +59,9 @@ export const GridGlowBackground: React.FC<GridGlowBackgroundProps> = ({
 
       setNewTarget() {
         this.targetX =
-          Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
+          Math.floor(Math.random() * (canvas!.width / gridSize)) * gridSize;
         this.targetY =
-          Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
+          Math.floor(Math.random() * (canvas!.height / gridSize)) * gridSize;
       }
 
       update() {
@@ -78,8 +78,8 @@ export const GridGlowBackground: React.FC<GridGlowBackgroundProps> = ({
       }
 
       draw() {
-        ctx.globalAlpha = this.alpha;
-        const grad = ctx.createRadialGradient(
+        ctx!.globalAlpha = this.alpha;
+        const grad = ctx!.createRadialGradient(
           this.x,
           this.y,
           0,
@@ -89,11 +89,11 @@ export const GridGlowBackground: React.FC<GridGlowBackgroundProps> = ({
         );
         grad.addColorStop(0, this.color);
         grad.addColorStop(1, "transparent");
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.globalAlpha = 1;
+        ctx!.fillStyle = grad;
+        ctx!.beginPath();
+        ctx!.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx!.fill();
+        ctx!.globalAlpha = 1;
       }
     }
 
