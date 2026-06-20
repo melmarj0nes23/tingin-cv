@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import mammoth from "mammoth";
 import PDFParser from "pdf2json";
 
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();

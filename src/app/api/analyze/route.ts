@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 
+export const maxDuration = 60;
+
 // We initialize inside the POST handler so it safely reads process.env
 
 export async function POST(req: NextRequest) {
