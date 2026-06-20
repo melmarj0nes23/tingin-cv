@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { UploadCloud, FileText, Zap, ChevronLeft, CheckCircle2, AlertTriangle, AlertCircle, Copy, BarChart3, Target, Sparkles, Clock, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface AnalysisResult {
   matchScore: number;
@@ -322,13 +323,13 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="print-root min-h-screen bg-black text-white font-sans selection:bg-blue-500/30 overflow-hidden">
+    <div className="print-root min-h-screen bg-[var(--bg)] text-[var(--fg)] font-sans selection:bg-blue-500/30 overflow-hidden">
       {/* Background Glows */}
-      <div className="fixed top-[-20%] left-[-10%] w-[50vw] h-[50vh] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none print:hidden" />
-      <div className="fixed bottom-[-20%] right-[-10%] w-[50vw] h-[50vh] bg-purple-600/10 blur-[120px] rounded-full pointer-events-none print:hidden" />
+      <div className="fixed top-[-20%] left-[-10%] w-[50vw] h-[50vh] bg-blue-400/30 dark:bg-blue-600/10 blur-[120px] rounded-full pointer-events-none print:hidden" />
+      <div className="fixed bottom-[-20%] right-[-10%] w-[50vw] h-[50vh] bg-purple-400/30 dark:bg-purple-600/10 blur-[120px] rounded-full pointer-events-none print:hidden" />
 
       {/* Header */}
-      <header className="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl print:hidden">
+      <header className="fixed top-0 w-full z-50 border-b border-[var(--glass-border)] bg-[var(--bg)]/50 backdrop-blur-xl print:hidden">
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-6 h-6 rounded-md bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center group-hover:shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all">
@@ -338,9 +339,10 @@ export default function DashboardPage() {
           </Link>
 
           <div className="flex items-center gap-4">
+            <ThemeToggle />
             <button 
               onClick={() => setIsHistoryOpen(true)}
-              className="text-sm font-medium text-white hover:text-blue-400 transition-colors flex items-center gap-2 p-2"
+              className="text-sm font-medium text-[var(--fg)] hover:text-blue-400 transition-colors flex items-center gap-2 p-2"
             >
               <Clock className="w-5 h-5 md:w-4 md:h-4" />
               <span className="hidden md:inline">History</span>
@@ -351,7 +353,7 @@ export default function DashboardPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 onClick={resetAnalysis} 
-                className="text-sm font-medium text-white bg-white/10 hover:bg-white/20 border border-white/5 px-4 py-2 rounded-full transition-colors flex items-center gap-2"
+                className="text-sm font-medium text-[var(--fg)] bg-[var(--glass-bg)] hover:bg-[var(--glass-hover)] border border-[var(--glass-border)] px-4 py-2 rounded-full transition-colors flex items-center gap-2"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span className="hidden sm:inline">New Analysis</span>
@@ -374,12 +376,12 @@ export default function DashboardPage() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="flex-grow flex items-start md:items-center justify-center w-full pt-4 md:pt-0 pb-12"
             >
-              <div className="w-full max-w-6xl bg-[#0a0a0a] border border-white/10 p-6 sm:p-8 md:p-12 rounded-2xl md:rounded-3xl relative shadow-2xl">
+              <div className="w-full max-w-6xl bg-[var(--bg)] border border-[var(--glass-border)] p-6 sm:p-8 md:p-12 rounded-2xl md:rounded-3xl relative shadow-2xl">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-80" />
                 
                 <div className="text-center mb-12">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-3 md:mb-4 text-white">Precision Analysis</h1>
-                  <p className="text-zinc-300 text-base sm:text-lg">Match your professional profile against target requirements.</p>
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-3 md:mb-4 text-[var(--fg)]">Precision Analysis</h1>
+                  <p className="text-zinc-600 dark:text-zinc-300 text-base sm:text-lg">Match your professional profile against target requirements.</p>
                 </div>
 
                 {error && (
@@ -392,24 +394,24 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                   {/* Upload */}
                   <div className="flex flex-col gap-3">
-                    <label className="text-sm font-bold text-zinc-300 uppercase tracking-wider">Resume (PDF, DOCX)</label>
-                    <div 
+                    <label className="text-sm font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider text-center w-full">Resume (PDF, DOCX)</label>
+                      <div 
                       onClick={() => fileInputRef.current?.click()}
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}
                       onDrop={handleDrop}
                       className={`h-[200px] sm:h-[240px] rounded-2xl border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center p-6 text-center cursor-pointer relative overflow-hidden group
-                        ${isDragging ? 'border-blue-500 bg-blue-500/10' : 'border-white/20 hover:border-blue-400 hover:bg-white/5'}
+                        ${isDragging ? 'border-blue-500 bg-blue-500/10' : 'border-[var(--glass-border)] hover:border-blue-400 hover:bg-[var(--glass-hover)]'}
                       `}
                     >
                       <input type="file" accept=".pdf,.docx" className="hidden" ref={fileInputRef} onChange={(e) => { if(e.target.files?.length) setFile(e.target.files[0]) }} />
                       
-                      <div className="w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-all text-zinc-300">
+                      <div className="w-14 h-14 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-all text-zinc-400">
                         <UploadCloud className="w-6 h-6" />
                       </div>
                       
-                      <p className="text-base font-bold text-white mb-2">Click or drag resume</p>
-                      <p className="text-sm text-zinc-400">PDF, DOCX up to 5MB</p>
+                      <p className="text-base font-bold text-[var(--fg)] mb-2">Click or drag resume</p>
+                      <p className="text-sm text-zinc-500">PDF, DOCX up to 5MB</p>
                       
                       {file && (
                         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="absolute bottom-4 left-4 right-4 bg-blue-500/20 border border-blue-500/40 text-blue-200 text-sm py-2 px-4 rounded-xl flex items-center justify-center gap-2 truncate shadow-lg backdrop-blur-md">
@@ -422,15 +424,23 @@ export default function DashboardPage() {
 
                   {/* JD */}
                   <div className="flex flex-col gap-3">
-                    <label className="text-sm font-bold text-zinc-300 uppercase tracking-wider">Job Description</label>
-                    <div className="relative h-[200px] sm:h-[240px]">
+                    <label className="text-sm font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider text-center w-full">Job Description</label>
+                    <div className="relative h-[200px] sm:h-[240px] group">
                       <textarea 
-                        className="w-full h-full bg-white/5 border border-white/10 rounded-2xl p-6 text-base text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none placeholder:text-zinc-500 transition-all shadow-inner" 
-                        placeholder="Paste the target job requirements, responsibilities, and qualifications here..."
+                        className="w-full h-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-6 text-base text-[var(--fg)] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none transition-all shadow-inner hover:border-blue-400 hover:bg-[var(--glass-hover)]" 
+                        placeholder=""
                         value={jobDescription}
                         onChange={(e) => setJobDescription(e.target.value)}
                       />
-                      <FileText className="absolute bottom-6 right-6 w-8 h-8 text-white/10 pointer-events-none" />
+                      {!jobDescription && (
+                        <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-6 text-center">
+                          <div className="w-14 h-14 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center mb-4 transition-all text-zinc-400 group-hover:scale-110 group-hover:bg-blue-500/20 group-hover:text-blue-400">
+                            <FileText className="w-6 h-6" />
+                          </div>
+                          <p className="text-base font-bold text-[var(--fg)] mb-2">Paste job description</p>
+                          <p className="text-sm text-zinc-500">Target requirements & qualifications</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -441,7 +451,7 @@ export default function DashboardPage() {
                     whileTap={{ scale: 0.98 }}
                     onClick={handleAnalyze}
                     disabled={isProcessing}
-                    className="w-full md:w-auto min-w-[320px] h-16 bg-white text-black rounded-full font-bold text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-zinc-200 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] overflow-hidden relative"
+                    className="w-full md:w-auto min-w-[320px] h-16 bg-[var(--fg)] text-[var(--bg)] rounded-full font-bold text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-all shadow-[0_0_40px_var(--accent-glow)] overflow-hidden relative"
                   >
                     {isProcessing ? (
                       <div className="flex flex-col justify-center w-full px-6 absolute inset-0 z-10">
@@ -452,8 +462,8 @@ export default function DashboardPage() {
                           </div>
                           <span>{Math.floor(progress)}%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-black/10 rounded-full overflow-hidden">
-                          <div className="h-full bg-black transition-all duration-300" style={{ width: `${progress}%` }} />
+                        <div className="w-full h-1.5 bg-[var(--bg)]/10 rounded-full overflow-hidden">
+                          <div className="h-full bg-[var(--bg)] transition-all duration-300" style={{ width: `${progress}%` }} />
                         </div>
                       </div>
                     ) : (
@@ -543,11 +553,11 @@ export default function DashboardPage() {
                     <div className="space-y-6">
                       {Object.entries(result.scores).map(([category, score]) => (
                         <div key={category} className="space-y-2">
-                          <div className="flex justify-between text-xs font-bold text-zinc-400 uppercase tracking-wider">
+                          <div className="flex justify-between text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
                             <span>{category}</span>
-                            <span className="text-white">{score}%</span>
+                            <span className="text-[var(--fg)]">{score}%</span>
                           </div>
-                          <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                          <div className="h-1.5 w-full bg-[var(--glass-border)] rounded-full overflow-hidden">
                             <motion.div 
                               initial={{ width: 0 }}
                               animate={{ width: `${score}%` }}
@@ -574,19 +584,19 @@ export default function DashboardPage() {
                       <h2 className="text-xl font-bold font-heading">Recruiter's Perspective</h2>
                     </div>
                     
-                    <div className="bg-red-500/5 border border-red-500/20 p-6 rounded-2xl mb-6">
+                      <div className="bg-red-500/10 dark:bg-red-500/5 border border-red-500/20 p-6 rounded-2xl mb-6">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className="w-4 h-4 text-red-400" />
-                        <h3 className="text-xs font-bold text-red-400 uppercase tracking-widest">Rejection Risk</h3>
+                        <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400" />
+                        <h3 className="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-widest">Rejection Risk</h3>
                       </div>
-                      <p className="text-sm text-red-200/80 italic leading-relaxed">
+                      <p className="text-sm text-red-800 dark:text-red-200/80 italic leading-relaxed">
                         "{result.atsRejectionReason}"
                       </p>
                     </div>
 
-                    <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
-                      <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Overall Assessment</h3>
-                      <p className="text-sm text-zinc-300 leading-relaxed">
+                    <div className="p-6 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)]">
+                      <h3 className="text-xs font-bold text-zinc-600 dark:text-zinc-500 uppercase tracking-widest mb-3">Overall Assessment</h3>
+                      <p className="text-sm text-[var(--fg)] opacity-90 leading-relaxed">
                         {result.feedback}
                       </p>
                     </div>
@@ -606,19 +616,19 @@ export default function DashboardPage() {
                       {result.optimizedBullets.map((bullet, i) => (
                       <div key={i} className="group relative">
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="relative p-5 border border-white/15 bg-white/5 rounded-2xl transition-colors">
+                        <div className="relative p-5 border border-[var(--glass-border)] bg-[var(--glass-bg)] rounded-2xl transition-colors">
                           <div className="mb-3">
                             <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Original</span>
-                            <p className="text-xs text-zinc-500 italic line-through decoration-zinc-700">{bullet.original}</p>
+                            <p className="text-xs text-zinc-600 dark:text-zinc-500 italic line-through decoration-zinc-400 dark:decoration-zinc-700">{bullet.original}</p>
                           </div>
                           <div>
                             <div className="flex justify-between items-start mb-1">
                               <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest bg-blue-400/10 px-2 py-0.5 rounded-full">Optimized</span>
-                              <button onClick={() => copyToClipboard(bullet.optimized)} className="text-zinc-500 hover:text-white transition-colors">
+                              <button onClick={() => copyToClipboard(bullet.optimized)} className="text-zinc-500 hover:text-[var(--fg)] transition-colors">
                                 <Copy className="w-4 h-4" />
                               </button>
                             </div>
-                            <p className="text-sm text-zinc-200 leading-relaxed">"{bullet.optimized}"</p>
+                            <p className="text-sm text-[var(--fg)] opacity-90 leading-relaxed">"{bullet.optimized}"</p>
                           </div>
                         </div>
                       </div>
@@ -629,7 +639,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Skills Gap */}
-              <motion.div variants={itemVariants} className="glass border border-white/25 rounded-2xl lg:rounded-3xl p-6 lg:p-8">
+              <motion.div variants={itemVariants} className="glass border border-[var(--glass-border)] rounded-2xl lg:rounded-3xl p-6 lg:p-8">
                 <div className="flex items-center gap-2 mb-8">
                   <Target className="w-5 h-5 text-blue-400" />
                   <h2 className="text-xl font-bold font-heading">Skills Gap Analysis</h2>
@@ -652,7 +662,7 @@ export default function DashboardPage() {
                             <div key={i} className={`text-xs font-medium px-3 py-1.5 rounded-lg border ${
                               statusType === 'Missing' ? 'bg-red-500/10 text-red-300 border-red-500/20' : 
                               statusType === 'Weak' ? 'bg-yellow-500/10 text-yellow-300 border-yellow-500/20' : 
-                              'bg-white/5 text-zinc-300 border-white/10'
+                              'bg-[var(--glass-bg)] text-zinc-600 dark:text-zinc-300 border-[var(--glass-border)]'
                             }`}>
                               {skill.skill}
                             </div>
@@ -685,14 +695,14 @@ export default function DashboardPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 w-full max-w-md h-full bg-[#0a0a0a] border-l border-white/10 z-[70] flex flex-col shadow-2xl"
+              className="fixed top-0 right-0 w-full max-w-md h-full bg-[var(--bg)] border-l border-[var(--glass-border)] z-[70] flex flex-col shadow-2xl"
             >
-              <div className="p-6 border-b border-white/10 flex items-center justify-between">
+              <div className="p-6 border-b border-[var(--glass-border)] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5 text-blue-400" />
                   <h2 className="text-xl font-bold font-heading">Analysis History</h2>
                 </div>
-                <button onClick={() => setIsHistoryOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                <button onClick={() => setIsHistoryOpen(false)} className="p-2 hover:bg-[var(--glass-hover)] rounded-full transition-colors">
                   <X className="w-5 h-5 text-zinc-400" />
                 </button>
               </div>
@@ -707,7 +717,7 @@ export default function DashboardPage() {
                     <div 
                       key={item.id} 
                       onClick={() => loadHistoryItem(item)}
-                      className="group p-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-blue-500/30 cursor-pointer transition-all relative overflow-hidden"
+                      className="group p-5 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl hover:bg-[var(--glass-hover)] hover:border-blue-500/30 cursor-pointer transition-all relative overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                       <div className="relative">
@@ -719,7 +729,7 @@ export default function DashboardPage() {
                             {new Date(item.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
-                        <p className="text-sm font-bold text-white mb-1 truncate">{item.fileName}</p>
+                        <p className="text-sm font-bold text-[var(--fg)] mb-1 truncate">{item.fileName}</p>
                         <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
                           "{item.jobTitlePreview}"
                         </p>
@@ -730,7 +740,7 @@ export default function DashboardPage() {
               </div>
 
               {history.length > 0 && (
-                <div className="p-6 border-t border-white/10">
+                <div className="p-6 border-t border-[var(--glass-border)]">
                   <button 
                     onClick={clearHistory}
                     className="w-full py-3 text-sm font-bold text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl transition-colors"
@@ -759,10 +769,10 @@ export default function DashboardPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="print-modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] bg-zinc-900 border border-white/10 rounded-2xl z-[90] flex flex-col shadow-2xl overflow-hidden"
+              className="print-modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[90vh] bg-[var(--bg)] border border-[var(--glass-border)] rounded-2xl z-[90] flex flex-col shadow-2xl overflow-hidden"
             >
-              <div className="p-4 md:p-5 border-b border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-zinc-950 print:hidden">
-                <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2"><FileText className="w-5 h-5 text-blue-400 shrink-0" /> <span className="truncate">Optimized Resume Preview</span></h2>
+              <div className="p-4 md:p-5 border-b border-[var(--glass-border)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-[var(--glass-bg)] print:hidden">
+                <h2 className="text-base sm:text-lg font-bold text-[var(--fg)] flex items-center gap-2"><FileText className="w-5 h-5 text-blue-400 shrink-0" /> <span className="truncate">Optimized Resume Preview</span></h2>
                 <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
                   <button 
                     onClick={downloadPdf}
@@ -771,13 +781,13 @@ export default function DashboardPage() {
                   >
                     {isDownloading ? "Generating PDF..." : "Download PDF"}
                   </button>
-                  <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors shrink-0">
+                  <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-[var(--glass-hover)] rounded-full transition-colors shrink-0">
                     <X className="w-5 h-5 text-zinc-400" />
                   </button>
                 </div>
               </div>
 
-              <div className="print-scroll flex-1 overflow-y-auto p-4 md:p-8 bg-zinc-800 custom-scrollbar">
+              <div className="print-scroll flex-1 overflow-y-auto p-4 md:p-8 bg-[var(--glass-bg)] custom-scrollbar">
                 {/* A4 Paper Container */}
                 <div 
                   id="resume-preview"

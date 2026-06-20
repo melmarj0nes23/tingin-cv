@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Geist } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -25,12 +26,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geist.variable} dark h-full antialiased`}
+      suppressHydrationWarning
+      className={`${inter.variable} ${geist.variable} h-full antialiased`}
     >
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
-      <body className="flex flex-col min-h-screen bg-background text-on-surface font-body-md">{children}</body>
+      <body className="flex flex-col min-h-screen font-body-md">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

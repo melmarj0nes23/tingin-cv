@@ -5,6 +5,7 @@ import { ArrowRight, UploadCloud, Target, ShieldCheck, Sparkles } from "lucide-r
 import { motion } from "framer-motion";
 import GridGlowBackground from "@/components/ui/grid-glow-background";
 import { GradientCard } from "@/components/ui/gradient-card";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function Home() {
   const containerVariants: any = {
@@ -26,23 +27,18 @@ export default function Home() {
     },
   };
 
-  return (
-    <GridGlowBackground 
-      backgroundColor="#000000" 
-      glowColors={["#3b82f6", "#8b5cf6", "#3b82f6"]} 
-      gridColor="rgba(255,255,255,0.03)"
-    >
-      <div className="w-full text-white font-sans selection:bg-blue-500/30 overflow-x-hidden">
+  const content = (
+    <div className="w-full text-[var(--fg)] font-sans selection:bg-blue-500/30 overflow-x-hidden">
 
       {/* Ultra-minimal Header */}
-      <header className="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
+      <header className="fixed top-0 w-full z-50 border-b border-[var(--glass-border)] bg-[var(--bg)]/50 backdrop-blur-xl">
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-2"
           >
-            <div className="w-6 h-6 rounded-md bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+            <div className="w-6 h-6 rounded-md bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center shadow-[0_0_15px_var(--accent-glow)]">
               <Sparkles className="w-3 h-3 text-white" />
             </div>
             <span className="font-heading font-bold text-lg tracking-tight">TinginCV</span>
@@ -50,9 +46,11 @@ export default function Home() {
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-4"
           >
+            <ThemeToggle />
             <Link href="/dashboard">
-              <button className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+              <button className="text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-[var(--fg)] transition-colors">
                 Launch App &rarr;
               </button>
             </Link>
@@ -68,7 +66,7 @@ export default function Home() {
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 text-xs font-medium text-zinc-300">
+          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-sm mb-8 text-xs font-medium text-zinc-500 dark:text-zinc-300">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
@@ -88,7 +86,7 @@ export default function Home() {
 
           <motion.p 
             variants={itemVariants}
-            className="text-lg md:text-xl text-zinc-400 max-w-3xl mb-10 md:mb-12 font-light leading-relaxed px-4 sm:px-0"
+            className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mb-10 md:mb-12 font-light leading-relaxed px-4 sm:px-0"
           >
             Stop guessing why you aren't getting interviews. Instantly compare your resume against the job description to uncover missing keywords, formatting errors, and critical skills gaps.
           </motion.p>
@@ -98,7 +96,7 @@ export default function Home() {
               <motion.button 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full sm:w-auto h-16 md:h-14 px-8 rounded-full bg-white text-black font-semibold text-lg md:text-base flex items-center justify-center gap-2 hover:bg-zinc-200 transition-colors shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                className="w-full sm:w-auto h-16 md:h-14 px-8 rounded-full bg-[var(--fg)] text-[var(--bg)] font-semibold text-lg md:text-base flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-[0_0_30px_var(--accent-glow)]"
               >
                 Analyze My Resume
                 <ArrowRight className="w-5 h-5 md:w-4 md:h-4" />
@@ -109,7 +107,7 @@ export default function Home() {
 
         {/* Feature Grid */}
         <motion.section 
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 pt-12 md:pt-20 border-t border-white/5"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 pt-12 md:pt-20"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -143,10 +141,35 @@ export default function Home() {
         </motion.section>
       </main>
 
-      <footer className="border-t border-white/5 py-8 mt-20 text-center text-zinc-600 text-sm">
+      <footer className="border-t border-[var(--glass-border)] py-8 mt-20 text-center text-zinc-500 dark:text-zinc-600 text-sm">
         <p>Built for the modern job seeker. © 2024 TinginCV.</p>
       </footer>
     </div>
-    </GridGlowBackground>
+  );
+
+  return (
+    <div className="relative min-h-screen w-full bg-[var(--bg)] overflow-hidden">
+      
+      {/* Light Mode Background Glows */}
+      <div className="fixed inset-0 z-0 pointer-events-none dark:hidden">
+        <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vh] bg-blue-400/30 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vh] bg-purple-400/30 blur-[120px] rounded-full" />
+      </div>
+
+      {/* Dark Mode Grid Glow */}
+      <div className="fixed inset-0 z-0 pointer-events-none hidden dark:block">
+        <GridGlowBackground 
+          backgroundColor="var(--bg)" 
+          glowColors={["#3b82f6", "#8b5cf6", "#3b82f6"]} 
+          gridColor="var(--glass-bg)"
+        >
+          <></>
+        </GridGlowBackground>
+      </div>
+
+      <div className="relative z-10 w-full h-full flex flex-col items-center">
+        {content}
+      </div>
+    </div>
   );
 }

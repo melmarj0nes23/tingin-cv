@@ -43,18 +43,17 @@ export const GradientCard: React.FC<GradientCardProps> = ({ title, description, 
   return (
     <motion.div
       ref={cardRef}
-      className="relative rounded-2xl md:rounded-3xl overflow-hidden w-full flex flex-col"
+      className="relative rounded-2xl md:rounded-3xl overflow-hidden w-full flex flex-col bg-[var(--glass-bg)] dark:bg-[#0e131f] border border-[var(--glass-border)]"
       style={{
         transformStyle: "preserve-3d",
-        backgroundColor: "#0e131f",
-        boxShadow: "0 -10px 100px 10px rgba(78, 99, 255, 0.1), 0 0 10px 0 rgba(0, 0, 0, 0.5)",
+        perspective: 1000,
+        boxShadow: "0 10px 40px -10px var(--accent-glow)",
       }}
       initial={{ y: 0 }}
       animate={{
         y: isHovered ? -5 : 0,
         rotateX: rotation.x,
         rotateY: rotation.y,
-        perspective: 1000,
       }}
       transition={{
         type: "spring",
@@ -81,9 +80,15 @@ export const GradientCard: React.FC<GradientCardProps> = ({ title, description, 
         transition={{ duration: 0.4, ease: "easeOut" }}
       />
 
-      {/* Dark background with black gradient like in the image */}
+      {/* Light mode gradient overlay */}
       <motion.div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 bg-gradient-to-b from-transparent to-[var(--bg)] opacity-50 dark:hidden"
+        animate={{ z: -1 }}
+      />
+      
+      {/* Dark mode exact black gradient */}
+      <motion.div
+        className="absolute inset-0 z-0 hidden dark:block"
         style={{ background: "linear-gradient(180deg, #000000 0%, #000000 70%)" }}
         animate={{ z: -1 }}
       />
@@ -138,9 +143,8 @@ export const GradientCard: React.FC<GradientCardProps> = ({ title, description, 
       >
         {/* Icon circle with shadow */}
         <motion.div
-          className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center mb-6 md:mb-8 shrink-0"
+          className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center mb-6 md:mb-8 shrink-0 bg-[var(--glass-bg)] border border-[var(--glass-border)]"
           style={{
-            background: "linear-gradient(225deg, #171c2c 0%, #121624 100%)",
             position: "relative",
             overflow: "hidden"
           }}
@@ -166,7 +170,12 @@ export const GradientCard: React.FC<GradientCardProps> = ({ title, description, 
               filter: "blur(10px)"
             }}
           />
-          <div className="flex items-center justify-center w-full h-full relative z-10 text-white">
+          {/* Exact dark mode background for the icon */}
+          <div 
+            className="absolute inset-0 hidden dark:block pointer-events-none"
+            style={{ background: "linear-gradient(225deg, #171c2c 0%, #121624 100%)" }}
+          />
+          <div className="flex items-center justify-center w-full h-full relative z-10 text-[var(--fg)]">
             {icon}
           </div>
         </motion.div>
@@ -182,7 +191,7 @@ export const GradientCard: React.FC<GradientCardProps> = ({ title, description, 
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <motion.h3
-            className="text-xl md:text-2xl font-bold font-heading text-white mb-2 md:mb-4"
+            className="text-xl md:text-2xl font-bold font-heading text-[var(--fg)] mb-2 md:mb-4"
             style={{ letterSpacing: "-0.01em", lineHeight: 1.2 }}
             initial={{ filter: "blur(3px)", opacity: 0.7 }}
             animate={{
@@ -196,7 +205,7 @@ export const GradientCard: React.FC<GradientCardProps> = ({ title, description, 
           </motion.h3>
 
           <motion.p
-            className="text-sm md:text-[15px] mb-6 md:mb-8 text-zinc-400 leading-relaxed font-light"
+            className="text-sm md:text-[15px] mb-6 md:mb-8 text-zinc-600 dark:text-zinc-400 leading-relaxed font-light"
             initial={{ filter: "blur(3px)", opacity: 0.7 }}
             animate={{
               textShadow: isHovered ? "0 1px 2px rgba(0,0,0,0.3)" : "none",
