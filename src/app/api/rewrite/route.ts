@@ -18,10 +18,12 @@ export async function POST(req: NextRequest) {
       Your task is to completely rewrite the provided Resume Text so it perfectly aligns with the Target Job Description.
       
       Instructions:
-      1. Keep the candidate's actual history (companies, dates, degrees) accurate. Do not invent fake jobs.
-      2. Rewrite the professional summary to be a powerful, keyword-rich paragraph targeting the job description.
-      3. Rewrite every bullet point to focus on impact, action verbs, and quantifiable metrics, integrating keywords from the job description naturally.
-      4. Curate and list the most relevant hard and soft skills.
+      1. STRICT FACTUAL ACCURACY: Keep the candidate's actual history (companies, titles, dates, degrees) 100% accurate. Do NOT invent fake jobs.
+      2. NO HALLUCINATION IN NON-TECH ROLES: Do NOT inject "web development" or "coding" into unrelated jobs (e.g., Customer Service, Workforce). Every single bullet point must be unique. NEVER copy and paste bullets across different jobs.
+      3. MAXIMIZE ATS SCORE (TARGET 95%+): To achieve a massive ATS score increase without lying, you MUST aggressively inject keywords from the Job Description into the "Professional Summary", the "Skills" array, and any actual technical roles (like Freelance Web Developer).
+      4. TECH-ADJACENT VERBS: For non-tech roles, highlight transferable skills by using high-impact, tech-adjacent action verbs (e.g., "Optimized workflows," "Architected solutions," "Deployed strategies," "Analyzed data") to naturally boost keyword density.
+      5. Enhance all bullet points to focus on impact and quantifiable metrics.
+      6. Curate an exhaustive list of hard and soft skills in the skills array, directly mirroring the phrasing used in the target job description to guarantee keyword matches.
       
       Resume Text:
       """
